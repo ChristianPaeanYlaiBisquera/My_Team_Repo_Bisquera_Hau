@@ -4,9 +4,196 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Boss Rush TD - Hard Economy</title>
+    <style>
+        /* ========== RESET & GLOBAL ========== */
+        * {
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
 
-    Dito Pre yung Style
+        body {
+            background: linear-gradient(145deg, #0a1a1f 0%, #0c2a2f 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Segoe UI', 'Courier New', monospace;
+            margin: 0;
+            padding: 20px;
+        }
 
+        /* ========== GAME WRAPPER ========== */
+        .game-wrapper {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* ========== CANVAS CONTAINER ========== */
+        .game-container {
+            background: #1e3a3f;
+            border-radius: 48px;
+            padding: 20px;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1);
+        }
+
+        canvas {
+            display: block;
+            margin: 0 auto;
+            border-radius: 24px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            cursor: crosshair;
+            background-color: #1d2f2e;
+        }
+
+        /* ========== TOWER PANEL (RIGHT SIDEBAR) ========== */
+        .tower-panel {
+            background: #0e282ecc;
+            backdrop-filter: blur(8px);
+            border-radius: 32px;
+            padding: 16px 12px;
+            width: 190px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+            border: 1px solid #58c4b4;
+        }
+
+        .tower-panel h3 {
+            text-align: center;
+            margin: 0 0 12px 0;
+            color: #f5e2b0;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+        }
+
+        .tower-option {
+            background: #1f4448;
+            margin-bottom: 10px;
+            padding: 6px 8px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            border: 2px solid transparent;
+        }
+
+        .tower-option.selected {
+            border-color: #ffd966;
+            background: #2e6b65;
+            box-shadow: 0 0 8px #ffd966;
+        }
+
+        .tower-option:hover {
+            background: #3a7d76;
+            transform: scale(0.98);
+        }
+
+        .tower-icon {
+            font-size: 28px;
+            width: 44px;
+            text-align: center;
+        }
+
+        .tower-stats {
+            flex: 1;
+            font-size: 10px;
+            font-weight: bold;
+            color: #eef5db;
+        }
+
+        .tower-stats div {
+            line-height: 1.25;
+        }
+
+        .price {
+            color: #ffd966;
+        }
+
+        /* ========== INFO PANEL (TOP BAR) ========== */
+        .info-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            margin-bottom: 12px;
+            gap: 15px;
+            flex-wrap: wrap;
+            background: #0e282ecc;
+            backdrop-filter: blur(4px);
+            padding: 10px 20px;
+            border-radius: 60px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 18px;
+            background: #071a1e;
+            padding: 5px 18px;
+            border-radius: 40px;
+            font-weight: bold;
+        }
+
+        .stat {
+            color: #c0f2e6;
+            font-size: 0.9rem;
+        }
+
+        .stat span {
+            color: #f5c542;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        button {
+            background: #2d5e5e;
+            border: none;
+            color: white;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.9rem;
+            padding: 5px 18px;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: 0.1s linear;
+            box-shadow: 0 3px 0 #0e2a2a;
+        }
+
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 1px 0 #0e2a2a;
+        }
+
+        .wave-progress {
+            background: #030f12;
+            padding: 4px 14px;
+            border-radius: 28px;
+            color: #b4e6da;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .message-area {
+            background: #030f12;
+            padding: 6px 16px;
+            border-radius: 28px;
+            color: #fad974;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 800px) {
+            .tower-panel { width: 160px; }
+            .tower-icon { font-size: 24px; width: 36px; }
+            .stats { gap: 10px; }
+        }
+    </style>
 </head>
 <body>
 <div class="game-wrapper">
