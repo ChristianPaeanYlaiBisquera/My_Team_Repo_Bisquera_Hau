@@ -27,7 +27,7 @@
 
 | Start Menu | Gameplay | Game Over |
 |------------|----------|-----------|
-| _(screenshot)_ | _(screenshot)_ | _(screenshot)_ |
+| <img width="1889" height="886" alt="Screenshot 2026-04-29 073448" src="https://github.com/user-attachments/assets/aad0fc52-8651-4f32-a82c-a656808fca40" /> | _(screenshot)_ | _(screenshot)_ |
 
 ---
 
