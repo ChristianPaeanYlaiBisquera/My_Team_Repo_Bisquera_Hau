@@ -1,6 +1,11 @@
 # 🏰 Bastion's Last Stand
 ### A Browser-Based Tower Defense Game
 
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-222222?style=for-the-badge&logo=github&logoColor=white)
+
 <img width="1889" height="886" alt="Screenshot 2026-04-29 073448" src="https://github.com/user-attachments/assets/aad0fc52-8651-4f32-a82c-a656808fca40" />
 <img width="1888" height="887" alt="Screenshot 2026-04-29 073544" src="https://github.com/user-attachments/assets/d5e7865a-7c0b-44e6-aff7-46b6fb28b532" />
 <img width="1881" height="900" alt="Screenshot 2026-04-29 073634" src="https://github.com/user-attachments/assets/595057bc-535a-483b-a6d3-6b66f5368237" />
