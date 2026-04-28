@@ -19,8 +19,6 @@
 
 ## 📸 Screenshots
 
-> _Add screenshots here after taking them. You can drag and drop images directly into the GitHub README editor._
-
 | Start Menu | Gameplay | Game Over |
 |------------|----------|-----------|
 | <img width="1889" height="886" alt="Screenshot 2026-04-29 073448" src="https://github.com/user-attachments/assets/aad0fc52-8651-4f32-a82c-a656808fca40" /> | <img width="1888" height="887" alt="Screenshot 2026-04-29 073544" src="https://github.com/user-attachments/assets/d5e7865a-7c0b-44e6-aff7-46b6fb28b532" /> | <img width="1881" height="900" alt="Screenshot 2026-04-29 073634" src="https://github.com/user-attachments/assets/595057bc-535a-483b-a6d3-6b66f5368237" /> |
@@ -126,19 +124,6 @@ Click the **[Live Demo](#-live-demo)** link at the top of this README.
    ```
 2. Open `tower-defense-FULL.html` in any modern browser.
 3. No server, no install, no dependencies needed.
-
----
-
-## 🌐 Deploying to GitHub Pages
-
-1. Push all files to your `main` branch
-2. Go to your repo on GitHub → **Settings** → **Pages**
-3. Under **Source**, select **Deploy from a branch**
-4. Select **`main`** branch and **`/ (root)`** folder
-5. Click **Save** — your site will be live in a few minutes at:
-   ```
-   https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
-   ```
 
 ---
 
