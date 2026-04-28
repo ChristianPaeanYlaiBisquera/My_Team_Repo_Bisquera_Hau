@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tower Defense — Bastion's Last Stand</title>
+  <style>
+    /* ============================================================
+       PART 1 — STYLES & LAYOUT
+       ============================================================ */
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+
+    :root {
+      --bg:        #0a0e1a;
+      --panel:     #0f1628;
+      --border:    #1e3a5f;
+      --accent1:   #00d4ff;
+      --accent2:   #ff6b35;
+      --accent3:   #39ff14;
+      --gold:      #ffd700;
+      --hp-green:  #39ff14;
+      --hp-red:    #ff2244;
+      --text:      #c8dff0;
+      --dim:       #4a6a8a;
+      --tower-basic:   #00d4ff;
+      --tower-cannon:  #ff6b35;
+      --tower-sniper:  #a855f7;
+      --tower-freeze:  #38bdf8;
+      --tower-laser:   #f9a825;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Share Tech Mono', monospace;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ─── START MENU ─────────────────────────────────────── */
+    #startMenu {
+      position: fixed; inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, #0d1f3c 0%, #050810 70%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 999;
+      gap: 0;
+    }
+
+    #startMenu .stars {
+      position: absolute; inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 10%, rgba(0,212,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 80%, rgba(57,255,20,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 10% 70%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 40%, rgba(255,107,53,.4) 0%, transparent 100%);
+      animation: twinkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      from { opacity: .7; }
+      to   { opacity: 1; }
+    }
+
+    #startMenu .logo-wrap {
+      position: relative; text-align: center; margin-bottom: 48px;
+    }
+
+    #startMenu .logo-sub {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; letter-spacing: 8px;
+      color: var(--accent1); opacity: .8;
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+
+    #startMenu .logo-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 0%, var(--accent1) 50%, #7dd3fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: none;
+      filter: drop-shadow(0 0 30px rgba(0,212,255,.5));
+    }
+
+    #startMenu .logo-accent {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 700;
+      color: var(--accent2);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 6px;
+      filter: drop-shadow(0 0 12px rgba(255,107,53,.6));
+    }
+
+    #startMenu .divider {
+      width: 280px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent1), transparent);
+      margin: 24px auto;
+    }
+
+    #startMenu .menu-btns {
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+
+    .menu-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 15px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 14px 60px;
+      border: 2px solid var(--accent1);
+      background: transparent;
+      color: var(--accent1);
+      cursor: pointer;
+      position: relative;
+      transition: all .2s;
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+    }
+
+    .menu-btn:hover, .menu-btn.primary {
+      background: var(--accent1);
+      color: #000;
+      box-shadow: 0 0 30px rgba(0,212,255,.5), inset 0 0 20px rgba(0,212,255,.1);
+    }
+
+    .menu-btn.primary {
+      font-size: 18px; padding: 18px 80px;
+      animation: pulse-btn 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-btn {
+      0%, 100% { box-shadow: 0 0 20px rgba(0,212,255,.5); }
+      50%       { box-shadow: 0 0 50px rgba(0,212,255,.9), 0 0 80px rgba(0,212,255,.3); }
+    }
+
+    .menu-btn.secondary {
+      border-color: var(--accent2); color: var(--accent2);
+    }
+    .menu-btn.secondary:hover {
+      background: var(--accent2); color: #000;
+      box-shadow: 0 0 30px rgba(255,107,53,.5);
+    }
+
+    #startMenu .tip {
+      margin-top: 40px; font-size: 12px;
+      color: var(--dim); letter-spacing: 1px;
+    }
+
+    /* ─── HOW TO PLAY OVERLAY ───────────────────────────── */
+    #howToPlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.85);
+      z-index: 1000;
+      display: none;
+      align-items: center; justify-content: center;
+    }
+    #howToPlay.show { display: flex; }
+
+    #howToPlay .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 40px 50px;
+      max-width: 620px; width: 90%;
+      position: relative;
+    }
+
+    #howToPlay h2 {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--accent1); margin-bottom: 24px;
+      font-size: 20px; letter-spacing: 3px;
+    }
+
+    #howToPlay .how-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    #howToPlay .how-item {
+      background: rgba(0,212,255,.05);
+      border: 1px solid rgba(0,212,255,.15);
+      padding: 14px 16px; font-size: 13px; line-height: 1.7;
+    }
+
+    #howToPlay .how-item strong {
+      color: var(--accent1); display: block; margin-bottom: 4px;
+      font-size: 12px; letter-spacing: 2px;
+    }
+
+    #howToPlay .close-btn {
+      position: absolute; top: 16px; right: 16px;
+      background: none; border: 1px solid var(--dim);
+      color: var(--dim); font-size: 18px;
+      width: 34px; height: 34px; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #howToPlay .close-btn:hover { border-color: var(--accent2); color: var(--accent2); }
+
+    /* ─── HUD (top bar) ─────────────────────────────────── */
+    #hud {
+      display: none;
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 20px;
+      align-items: center; gap: 24px;
+      flex-shrink: 0;
+      position: relative; z-index: 10;
+    }
+    #hud.show { display: flex; }
+
+    .hud-block {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px;
+    }
+
+    .hud-icon { font-size: 18px; }
+
+    .hud-label {
+      color: var(--dim); font-size: 11px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+
+    .hud-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 18px; font-weight: 700;
+    }
+
+    #goldVal   { color: var(--gold); }
+    #livesVal  { color: var(--hp-green); }
+    #waveVal   { color: var(--accent1); }
+    #scoreVal  { color: var(--accent3); }
+
+    #livesVal.low { color: var(--hp-red); animation: blink .5s step-end infinite; }
+    @keyframes blink { 50% { opacity: .3; } }
+
+    .hud-sep {
+      width: 1px; height: 32px;
+      background: var(--border); flex-shrink: 0;
+    }
+
+    #waveBtn {
+      margin-left: auto;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 2px;
+      padding: 8px 24px;
+      border: 2px solid var(--accent3);
+      background: transparent; color: var(--accent3);
+      cursor: pointer; text-transform: uppercase;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: all .2s;
+    }
+    #waveBtn:hover:not(:disabled) {
+      background: var(--accent3); color: #000;
+      box-shadow: 0 0 20px rgba(57,255,20,.5);
+    }
+    #waveBtn:disabled { opacity: .4; cursor: default; }
+
+    /* ─── MAIN GAME AREA ────────────────────────────────── */
+    #gameArea {
+      display: none;
+      flex: 1; overflow: hidden;
+      position: relative;
+    }
+    #gameArea.show { display: flex; }
+
+    /* ─── CANVAS ────────────────────────────────────────── */
+    #gameCanvas {
+      display: block;
+      background: #08111f;
+      cursor: crosshair;
+      flex-shrink: 0;
+    }
+
+    /* ─── SIDE PANEL ────────────────────────────────────── */
+    #sidePanel {
+      width: 220px; flex-shrink: 0;
+      background: var(--panel);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow-y: auto;
+    }
+
+    .sp-section {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sp-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--accent1); text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    /* ─── TOWER CARDS ───────────────────────────────────── */
+    .tower-card {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 10px;
+      border: 1px solid transparent;
+      background: rgba(255,255,255,.03);
+      cursor: pointer;
+      margin-bottom: 6px;
+      transition: all .15s;
+      position: relative;
+    }
+    .tower-card:hover {
+      border-color: var(--accent1);
+      background: rgba(0,212,255,.07);
+    }
+    .tower-card.selected {
+      border-color: var(--accent1);
+      background: rgba(0,212,255,.12);
+      box-shadow: inset 0 0 10px rgba(0,212,255,.1);
+    }
+    .tower-card.affordable { }
+    .tower-card.unaffordable { opacity: .45; cursor: not-allowed; }
+
+    .tc-icon {
+      width: 36px; height: 36px; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; flex-shrink: 0;
+    }
+
+    .tc-info { flex: 1; min-width: 0; }
+    .tc-name { font-size: 12px; color: #fff; margin-bottom: 2px; }
+    .tc-cost { font-size: 11px; color: var(--gold); }
+    .tc-stats { font-size: 10px; color: var(--dim); }
+
+    /* ─── SELECTED TOWER INFO ───────────────────────────── */
+    #towerInfo { }
+
+    #towerInfo .ti-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; color: #fff; margin-bottom: 8px;
+    }
+
+    #towerInfo .ti-row {
+      display: flex; justify-content: space-between;
+      font-size: 11px; margin-bottom: 4px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    #towerInfo .ti-row span:first-child { color: var(--dim); }
+    #towerInfo .ti-row span:last-child  { color: #fff; }
+
+    #upgradeBtn, #sellBtn {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px; letter-spacing: 1px;
+      width: 100%; padding: 8px;
+      border: 1px solid; cursor: pointer;
+      text-transform: uppercase;
+      background: transparent;
+      transition: all .15s;
+      margin-top: 6px;
+    }
+    #upgradeBtn { border-color: var(--accent1); color: var(--accent1); }
+    #upgradeBtn:hover { background: var(--accent1); color: #000; }
+    #sellBtn    { border-color: var(--accent2); color: var(--accent2); }
+    #sellBtn:hover { background: var(--accent2); color: #000; }
+
+    /* ─── WAVE INFO ─────────────────────────────────────── */
+    .wave-info-row {
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--dim); margin-bottom: 4px;
+    }
+    .wave-info-row span:last-child { color: var(--text); }
+
+    /* ─── SPEED CONTROL ─────────────────────────────────── */
+    #speedBtns { display: flex; gap: 6px; }
+    .speed-btn {
+      flex: 1; font-family: 'Orbitron', sans-serif;
+      font-size: 11px; padding: 7px 4px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: var(--dim); cursor: pointer;
+      transition: all .15s;
+    }
+    .speed-btn.active {
+      border-color: var(--accent1);
+      background: rgba(0,212,255,.1);
+      color: var(--accent1);
+    }
+    .speed-btn:hover { border-color: var(--accent1); color: var(--accent1); }
+
+    /* ─── GAME OVER / WIN SCREEN ────────────────────────── */
+    #gameOverScreen {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.85);
+      z-index: 900;
+      display: none;
+      align-items: center; justify-content: center;
+    }
+    #gameOverScreen.show { display: flex; }
+
+    #gameOverScreen .go-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 50px 60px;
+      text-align: center;
+      min-width: 380px;
+    }
+
+    #gameOverScreen .go-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 36px; font-weight: 900;
+      margin-bottom: 8px;
+    }
+    #gameOverScreen .go-title.lose { color: var(--hp-red); filter: drop-shadow(0 0 20px rgba(255,34,68,.5)); }
+    #gameOverScreen .go-title.win  { color: var(--accent3); filter: drop-shadow(0 0 20px rgba(57,255,20,.5)); }
+
+    #gameOverScreen .go-sub {
+      font-size: 13px; color: var(--dim); letter-spacing: 2px; margin-bottom: 32px;
+    }
+
+    .go-stats {
+      background: rgba(255,255,255,.03);
+      border: 1px solid var(--border);
+      padding: 20px 24px; margin-bottom: 28px; text-align: left;
+    }
+
+    .go-stat {
+      display: flex; justify-content: space-between;
+      font-size: 13px; padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .go-stat:last-child { border: none; }
+    .go-stat span:first-child { color: var(--dim); }
+    .go-stat span:last-child  { color: #fff; font-family: 'Orbitron', sans-serif; font-size: 15px; }
+
+    /* ─── FLOATING DAMAGE NUMBERS ───────────────────────── */
+    .float-num {
+      position: absolute;
+      pointer-events: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px; font-weight: 700;
+      color: #fff;
+      text-shadow: 0 0 8px rgba(0,0,0,.8);
+      animation: floatUp .8s ease-out forwards;
+      white-space: nowrap;
+    }
+    @keyframes floatUp {
+      0%   { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-48px); opacity: 0; }
+    }
+
+    /* ─── RANGE PREVIEW RING ─────────────────────────────── */
+    .range-ring {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      border: 1px dashed rgba(0,212,255,.35);
+      background: rgba(0,212,255,.04);
+      transform: translate(-50%, -50%);
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────────────── */
+    #sidePanel::-webkit-scrollbar { width: 4px; }
+    #sidePanel::-webkit-scrollbar-track { background: transparent; }
+    #sidePanel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+    /* ─── WAVE ANNOUNCE BANNER ──────────────────────────── */
+    #waveBanner {
+      position: absolute;
+      top: 60px; left: 50%; transform: translateX(-50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 22px; font-weight: 900;
+      color: #fff; letter-spacing: 4px;
+      text-shadow: 0 0 30px rgba(0,212,255,.8);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .3s;
+      white-space: nowrap;
+      z-index: 50;
+    }
+    #waveBanner.show { opacity: 1; }
+
+    /* ─── RESPONSIVE CANVAS WRAPPER ─────────────────────── */
+    #canvasWrap {
+      position: relative; flex: 1; overflow: hidden;
+      display: flex; align-items: flex-start; justify-content: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           START MENU                     ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="startMenu">
+  <div class="stars"></div>
+  <div class="logo-wrap">
+    <div class="logo-sub">◈ Strategic Defense System ◈</div>
+    <div class="logo-title">BASTION'S</div>
+    <div class="logo-accent">Last Stand</div>
+  </div>
+  <div class="divider"></div>
+  <div class="menu-btns">
+    <button class="menu-btn primary" onclick="startGame()">▶ Start Game</button>
+    <button class="menu-btn secondary" onclick="document.getElementById('howToPlay').classList.add('show')">? How to Play</button>
+  </div>
+  <p class="tip">⚡ Place towers on the grid · Defend the base · Survive all waves</p>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           HOW TO PLAY                    ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="howToPlay">
+  <div class="panel">
+    <h2>◈ HOW TO PLAY</h2>
+    <div class="how-grid">
+      <div class="how-item"><strong>🏗️ Place Towers</strong>Select a tower from the right panel, then click any grey tile on the map to place it. You can't build on the enemy path.</div>
+      <div class="how-item"><strong>⚔️ Waves</strong>Press "Send Wave" to begin. Enemies travel the path to your base. Each wave gets harder with more enemies.</div>
+      <div class="how-item"><strong>💰 Economy</strong>Start with 150 gold. Earn gold by killing enemies. Use it to buy and upgrade towers.</div>
+      <div class="how-item"><strong>🔧 Upgrades</strong>Click a placed tower to select it. Upgrade it for better damage/range, or sell it for 60% of its value.</div>
+      <div class="how-item"><strong>❤️ Lives</strong>Every enemy that reaches your base costs 1 life. Lose all lives = Game Over!</div>
+      <div class="how-item"><strong>🗼 Towers</strong>Basic · Cannon (AoE) · Sniper (long range) · Freeze (slows) · Laser (rapid fire)</div>
+    </div>
+    <button class="menu-btn primary" style="width:100%" onclick="document.getElementById('howToPlay').classList.remove('show')">Got it!</button>
+    <button class="close-btn" onclick="document.getElementById('howToPlay').classList.remove('show')">✕</button>
+  </div>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           HUD                            ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="hud">
+  <div class="hud-block">
+    <span class="hud-icon">💰</span>
+    <div><div class="hud-label">Gold</div><div class="hud-value" id="goldVal">150</div></div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-block">
+    <span class="hud-icon">❤️</span>
+    <div><div class="hud-label">Lives</div><div class="hud-value" id="livesVal">20</div></div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-block">
+    <span class="hud-icon">🌊</span>
+    <div><div class="hud-label">Wave</div><div class="hud-value" id="waveVal">0 / 15</div></div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-block">
+    <span class="hud-icon">⭐</span>
+    <div><div class="hud-label">Score</div><div class="hud-value" id="scoreVal">0</div></div>
+  </div>
+  <div class="hud-sep"></div>
+  <div class="hud-block">
+    <span class="hud-icon">💀</span>
+    <div><div class="hud-label">Kills</div><div class="hud-value" id="killsVal">0</div></div>
+  </div>
+  <button id="waveBtn" onclick="sendWave()">▶ Send Wave</button>
+</div>
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           GAME AREA                      ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="gameArea">
+
+  <!-- Canvas + floating elements -->
+  <div id="canvasWrap">
+    <canvas id="gameCanvas"></canvas>
+    <div id="waveBanner">WAVE 1 INCOMING!</div>
+  </div>
+
+  <!-- Side Panel -->
+  <div id="sidePanel">
+
+    <!-- Tower Shop -->
+    <div class="sp-section">
+      <div class="sp-title">◈ Tower Shop</div>
+
+      <div class="tower-card" id="tc-basic" onclick="selectTowerType('basic')">
+        <div class="tc-icon" style="background:rgba(0,212,255,.15)">🗼</div>
+        <div class="tc-info">
+          <div class="tc-name">Basic</div>
+          <div class="tc-cost">💰 50</div>
+          <div class="tc-stats">DMG:15 · RNG:120</div>
+        </div>
+      </div>
+
+      <div class="tower-card" id="tc-cannon" onclick="selectTowerType('cannon')">
+        <div class="tc-icon" style="background:rgba(255,107,53,.15)">💣</div>
+        <div class="tc-info">
+          <div class="tc-name">Cannon</div>
+          <div class="tc-cost">💰 100</div>
+          <div class="tc-stats">DMG:40 · AoE · RNG:100</div>
+        </div>
+      </div>
+
+      <div class="tower-card" id="tc-sniper" onclick="selectTowerType('sniper')">
+        <div class="tc-icon" style="background:rgba(168,85,247,.15)">🎯</div>
+        <div class="tc-info">
+          <div class="tc-name">Sniper</div>
+          <div class="tc-cost">💰 120</div>
+          <div class="tc-stats">DMG:80 · RNG:200</div>
+        </div>
+      </div>
+
+      <div class="tower-card" id="tc-freeze" onclick="selectTowerType('freeze')">
+        <div class="tc-icon" style="background:rgba(56,189,248,.15)">❄️</div>
+        <div class="tc-info">
+          <div class="tc-name">Freeze</div>
+          <div class="tc-cost">💰 90</div>
+          <div class="tc-stats">Slows · RNG:110</div>
+        </div>
+      </div>
+
+      <div class="tower-card" id="tc-laser" onclick="selectTowerType('laser')">
+        <div class="tc-icon" style="background:rgba(249,168,37,.15)">⚡</div>
+        <div class="tc-info">
+          <div class="tc-name">Laser</div>
+          <div class="tc-cost">💰 130</div>
+          <div class="tc-stats">DMG:8 · Rapid · RNG:130</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Selected Tower Info -->
+    <div class="sp-section" id="towerInfoSection" style="display:none">
+      <div class="sp-title">◈ Tower Info</div>
+      <div id="towerInfo"></div>
+      <button id="upgradeBtn" onclick="upgradeSelectedTower()">⬆ Upgrade</button>
+      <button id="sellBtn"    onclick="sellSelectedTower()">💸 Sell</button>
+    </div>
+
+    <!-- Wave Info -->
+    <div class="sp-section">
+      <div class="sp-title">◈ Wave Status</div>
+      <div class="wave-info-row"><span>Current</span><span id="waveInfoCurrent">Prep</span></div>
+      <div class="wave-info-row"><span>Enemies Left</span><span id="waveInfoLeft">—</span></div>
+      <div class="wave-info-row"><span>Next Wave In</span><span id="waveInfoNext">Ready</span></div>
+    </div>
+
+    <!-- Speed -->
+    <div class="sp-section">
+      <div class="sp-title">◈ Speed</div>
+      <div id="speedBtns">
+        <button class="speed-btn active" onclick="setSpeed(1)" id="sp1">1×</button>
+        <button class="speed-btn"        onclick="setSpeed(2)" id="sp2">2×</button>
+        <button class="speed-btn"        onclick="setSpeed(3)" id="sp3">3×</button>
+      </div>
+    </div>
+
+  </div><!-- /sidePanel -->
+
+</div><!-- /gameArea -->
+
+<!-- ╔══════════════════════════════════════════╗
+     ║           GAME OVER SCREEN               ║
+     ╚══════════════════════════════════════════╝ -->
+<div id="gameOverScreen">
+  <div class="go-panel">
+    <div class="go-title" id="goTitle">GAME OVER</div>
+    <div class="go-sub" id="goSub">The base has fallen.</div>
+    <div class="go-stats">
+      <div class="go-stat"><span>Final Score</span><span id="goScore">0</span></div>
+      <div class="go-stat"><span>Waves Survived</span><span id="goWaves">0</span></div>
+      <div class="go-stat"><span>Enemies Killed</span><span id="goKills">0</span></div>
+      <div class="go-stat"><span>Gold Earned</span><span id="goGold">0</span></div>
+    </div>
+    <button class="menu-btn primary" style="width:100%;margin-bottom:10px" onclick="restartGame()">↺ Play Again</button>
+    <button class="menu-btn secondary" style="width:100%" onclick="backToMenu()">⌂ Main Menu</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     PART 1 END — Game logic continues in Part 2
+     ============================================================ -->
+
+</body>
+</html>
