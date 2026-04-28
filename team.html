@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Team — Bastion's Last Stand</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:      #060d1a;
+      --surface: #0b1525;
+      --border:  #152440;
+      --accent:  #00d4ff;
+      --accent2: #ff6b35;
+      --accent3: #39ff14;
+      --gold:    #ffd700;
+      --text:    #c8dff0;
+      --dim:     #4a6a8a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Exo 2', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+      background: rgba(6,13,26,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 14px; font-weight: 900;
+      letter-spacing: 3px; color: var(--accent);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--dim); text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+    .nav-cta {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      padding: 9px 24px; background: var(--accent); color: #000;
+      text-decoration: none;
+      clip-path: polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+      transition: box-shadow .2s;
+    }
+    .nav-cta:hover { box-shadow: 0 0 24px rgba(0,212,255,.6); }
+
+    /* ── PAGE HEADER ─────────────────────────────── */
+    .page-header {
+      padding: 140px 48px 80px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .page-header::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 600px; height: 300px;
+      background: radial-gradient(ellipse, rgba(0,212,255,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .ph-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 6px; color: var(--accent);
+      text-transform: uppercase; margin-bottom: 16px;
+      position: relative;
+    }
+    .page-header h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(40px, 7vw, 80px); font-weight: 900;
+      color: #fff; line-height: 1; position: relative;
+    }
+    .page-header h1 span { color: var(--accent); }
+    .page-header p {
+      font-size: 16px; color: var(--dim);
+      margin-top: 20px; position: relative;
+      letter-spacing: 1px;
+    }
+
+    /* ── PROJECT INFO BAND ───────────────────────── */
+    .info-band {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex; justify-content: center; gap: 0;
+    }
+    .info-item {
+      flex: 1; max-width: 220px;
+      padding: 0 32px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .info-item:last-child { border: none; }
+    .info-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase; margin-bottom: 6px;
+    }
+    .info-val {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 700; color: var(--accent);
+    }
+
+    /* ── TEAM SECTION ────────────────────────────── */
+    .team-section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px 48px;
+    }
+
+    .team-intro {
+      text-align: center; margin-bottom: 72px;
+      opacity: 0; animation: fadeUp .7s .2s forwards;
+    }
+    .team-intro .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 5px;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .team-intro h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px,3.5vw,40px); font-weight: 900; color: #fff;
+    }
+    .team-intro h2 span { color: var(--accent); }
+
+    /* ── MEMBER CARDS ────────────────────────────── */
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+      gap: 2px;
+    }
+
+    .member-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 48px 44px;
+      position: relative; overflow: hidden;
+      opacity: 0;
+      transition: border-color .3s;
+    }
+    .member-card:first-child { animation: fadeUp .7s .4s forwards; }
+    .member-card:last-child  { animation: fadeUp .7s .6s forwards; }
+    .member-card:hover { border-color: var(--accent); }
+
+    /* Corner accent */
+    .member-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      border-top: 3px solid var(--accent);
+      border-left: 3px solid var(--accent);
+      width: 32px; height: 32px;
+    }
+    .member-card::after {
+      content: '';
+      position: absolute; bottom: 0; right: 0;
+      border-bottom: 3px solid var(--accent);
+      border-right: 3px solid var(--accent);
+      width: 32px; height: 32px;
+      opacity: .4;
+    }
+
+    /* Avatar */
+    .member-avatar {
+      width: 80px; height: 80px;
+      border: 2px solid var(--accent);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px;
+      background: rgba(0,212,255,.06);
+      margin-bottom: 24px;
+      position: relative;
+    }
+    .member-avatar::after {
+      content: '';
+      position: absolute; inset: -6px;
+      border: 1px solid rgba(0,212,255,.2);
+      border-radius: 6px;
+    }
+
+    .member-id {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 4px;
+      color: var(--accent); text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .member-name {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(16px,2vw,22px); font-weight: 900;
+      color: #fff; line-height: 1.2; margin-bottom: 6px;
+    }
+
+    .member-handle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 13px; color: var(--dim);
+      margin-bottom: 28px;
+    }
+    .member-handle a {
+      color: var(--accent); text-decoration: none;
+      transition: color .2s;
+    }
+    .member-handle a:hover { color: #fff; text-decoration: underline; }
+
+    /* Role badge */
+    .role-badge {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      padding: 6px 14px; margin-bottom: 24px;
+      border: 1px solid var(--accent2);
+      color: var(--accent2);
+      text-transform: uppercase;
+    }
+
+    /* Responsibilities */
+    .member-resp {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+
+    .resp-title {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 10px; letter-spacing: 3px;
+      color: var(--dim); text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .resp-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .resp-list li {
+      font-size: 13px; color: var(--text);
+      padding-left: 20px; position: relative; line-height: 1.5;
+    }
+    .resp-list li::before {
+      content: '▸';
+      position: absolute; left: 0;
+      color: var(--accent); font-size: 10px; top: 3px;
+    }
+
+    /* GitHub link */
+    .github-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; letter-spacing: 2px;
+      color: var(--dim); text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 10px 18px;
+      transition: all .2s;
+    }
+    .github-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0,212,255,.05);
+    }
+    .github-link .gh-icon { font-size: 16px; }
+
+    /* Pending badge */
+    .pending {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      color: var(--dim);
+      border: 1px dashed var(--border);
+      padding: 10px 18px;
+    }
+    .pending-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent2);
+      animation: blink .8s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── PROJECT DETAILS ─────────────────────────── */
+    .project-details {
+      max-width: 1100px; margin: 0 auto;
+      padding: 0 48px 100px;
+    }
+
+    .details-header {
+      text-align: center; margin-bottom: 56px;
+    }
+    .details-header .tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 5px;
+      color: var(--accent); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .details-header h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(24px,3vw,36px); font-weight: 900; color: #fff;
+    }
+    .details-header h2 span { color: var(--accent); }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2px; border: 1px solid var(--border);
+    }
+
+    .detail-card {
+      background: var(--surface);
+      padding: 36px 32px;
+      border-right: 1px solid var(--border);
+    }
+    .detail-card:last-child { border: none; }
+
+    .dc-icon { font-size: 32px; margin-bottom: 16px; display: block; }
+    .dc-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 2px; color: #fff;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+
+    .dc-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .dc-list li {
+      font-size: 13px; color: var(--dim);
+      padding-left: 20px; position: relative; line-height: 1.6;
+    }
+    .dc-list li::before {
+      content: '◈';
+      position: absolute; left: 0;
+      color: var(--accent); font-size: 9px; top: 4px;
+    }
+    .dc-list li strong { color: var(--text); }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 40px 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 13px; font-weight: 900;
+      letter-spacing: 3px; color: var(--accent);
+    }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      color: var(--dim); text-decoration: none; transition: color .2s;
+    }
+    .footer-links a:hover { color: var(--accent); }
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; color: var(--dim);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s, transform .7s; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Bastion's Last Stand</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#how-to-play">How to Play</a></li>
+    <li><a href="team.html" class="active">Team</a></li>
+  </ul>
+  <a href="tower-defense-FULL.html" class="nav-cta">▶ Play Now</a>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <p class="ph-tag">◈ Behind the Game</p>
+  <h1>Meet the <span>Team</span></h1>
+  <p>2nd Year IT · Game Development Major · 14-Day Sprint Project</p>
+</div>
+
+<!-- INFO BAND -->
+<div class="info-band">
+  <div class="info-item">
+    <div class="info-label">Project</div>
+    <div class="info-val">Bastion's Last Stand</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">Timeline</div>
+    <div class="info-val">14-Day Sprint</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">Platform</div>
+    <div class="info-val">Browser · HTML5</div>
+  </div>
+  <div class="info-item">
+    <div class="info-label">Team Size</div>
+    <div class="info-val">2 Students</div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team-section">
+
+  <div class="team-intro">
+    <p class="tag">◈ The Developers</p>
+    <h2>Student <span>Profiles</span></h2>
+  </div>
+
+  <div class="members-grid">
+
+    <!-- Student 1 -->
+    <div class="member-card">
+      <div class="member-avatar">👾</div>
+      <div class="member-id">Student 01 · Lead Developer</div>
+      <div class="member-name">Christian Paean Ylai<br>F. Bisquera</div>
+      <div class="member-handle">
+        GitHub: <a href="https://github.com/ChristianPaeanYlaiBisquera" target="_blank">@ChristianPaeanYlaiBisquera</a>
+      </div>
+      <span class="role-badge">Game Logic & Systems</span>
+      <div class="member-resp">
+        <div class="resp-title">Responsibilities</div>
+        <ul class="resp-list">
+          <li>Core game loop architecture and canvas rendering</li>
+          <li>Enemy AI, pathfinding, and wave system design</li>
+          <li>Tower mechanics — damage, range, targeting logic</li>
+          <li>Projectile system, particle effects, and animations</li>
+          <li>Upgrade & sell economy system</li>
+          <li>Part 2 JavaScript (tower-defense-part2.html)</li>
+        </ul>
+      </div>
+      <a href="https://github.com/ChristianPaeanYlaiBisquera" target="_blank" class="github-link">
+        <span class="gh-icon">🔗</span> View GitHub Profile
+      </a>
+    </div>
+
+    <!-- Student 2 -->
+    <div class="member-card">
+      <div class="member-avatar">🎮</div>
+      <div class="member-id">Student 02 · UI / Frontend</div>
+      <div class="member-name">Marc Hau</div>
+      <div class="member-handle">
+        GitHub: <a href="https://github.com/hawitz" target="_blank">@hawitz</a>
+      </div>
+      <span class="role-badge">UI Design & Web Portal</span>
+      <div class="member-resp">
+        <div class="resp-title">Responsibilities</div>
+        <ul class="resp-list">
+          <li>HTML structure, CSS styling, and layout design</li>
+          <li>Start menu, HUD, side panel, and game over screens</li>
+          <li>Website portal — Landing page and Team page</li>
+          <li>Responsive design and visual polish</li>
+          <li>Game testing, balancing feedback, and QA</li>
+          <li>Part 1 HTML/CSS (tower-defense-part1.html)</li>
+        </ul>
+      </div>
+      <a href="https://github.com/hawitz" target="_blank" class="github-link">
+        <span class="gh-icon">🔗</span> View GitHub Profile
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- PROJECT DETAILS -->
+<div class="project-details reveal">
+  <div class="details-header">
+    <p class="tag">◈ Deliverables</p>
+    <h2>Project <span>Requirements</span></h2>
+  </div>
+  <div class="details-grid">
+    <div class="detail-card">
+      <span class="dc-icon">🌐</span>
+      <div class="dc-title">Website</div>
+      <ul class="dc-list">
+        <li><strong>Landing Page</strong> — game title, instructions, play & download links</li>
+        <li><strong>Team Page</strong> — roles, GitHub profile links (this page)</li>
+        <li>Deployed via <strong>GitHub Pages</strong></li>
+        <li>Responsive design across screen sizes</li>
+      </ul>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">🎮</span>
+      <div class="dc-title">The Game</div>
+      <ul class="dc-list">
+        <li><strong>Menu Screen</strong> — animated start screen with How to Play</li>
+        <li><strong>Core Loop</strong> — 15 waves, 5 towers, 6 enemy types</li>
+        <li><strong>Score Screen</strong> — final stats on game over or victory</li>
+        <li>Runs in-browser, no install required</li>
+      </ul>
+    </div>
+    <div class="detail-card">
+      <span class="dc-icon">🐙</span>
+      <div class="dc-title">GitHub Repo</div>
+      <ul class="dc-list">
+        <li><strong>5+ commits per student</strong> to prove collaboration</li>
+        <li>Shared repository with both contributors</li>
+        <li><strong>README.md</strong> with description, controls, screenshots</li>
+        <li>Clean commit history with meaningful messages</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Bastion's Last Stand</div>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="index.html#how-to-play">How to Play</a>
+    <a href="team.html">Team</a>
+    <a href="tower-defense-FULL.html">Play Game</a>
+  </div>
+  <div class="footer-copy">© 2025 Bisquera & Hau · IT Game Dev</div>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
