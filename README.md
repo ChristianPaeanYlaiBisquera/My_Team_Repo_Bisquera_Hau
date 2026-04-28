@@ -1,9 +1,11 @@
 # 🏰 Bastion's Last Stand
 ### A Browser-Based Tower Defense Game
 
-<img width="1881" height="900" alt="Screenshot 2026-04-29 073634" src="https://github.com/user-attachments/assets/595057bc-535a-483b-a6d3-6b66f5368237" />
-<img width="1888" height="887" alt="Screenshot 2026-04-29 073544" src="https://github.com/user-attachments/assets/d5e7865a-7c0b-44e6-aff7-46b6fb28b532" />
 <img width="1889" height="886" alt="Screenshot 2026-04-29 073448" src="https://github.com/user-attachments/assets/aad0fc52-8651-4f32-a82c-a656808fca40" />
+
+<img width="1888" height="887" alt="Screenshot 2026-04-29 073544" src="https://github.com/user-attachments/assets/d5e7865a-7c0b-44e6-aff7-46b6fb28b532" />
+
+<img width="1881" height="900" alt="Screenshot 2026-04-29 073634" src="https://github.com/user-attachments/assets/595057bc-535a-483b-a6d3-6b66f5368237" />
 
 > A fast-paced tower defense game built with vanilla HTML5 Canvas, CSS3, and JavaScript — no frameworks, no libraries, no installs. Just open and play.
 
