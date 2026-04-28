@@ -14,8 +14,6 @@
 🔗 **[Play the Game](https://christianpaeanylaibisquera.github.io/My_Team_Repo_Bisquera_Hau/)**  
 🌐 **[Visit the Website](https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/)**
 
-> ⚠️ Replace `YOUR-USERNAME` and `YOUR-REPO-NAME` with your actual GitHub username and repository name after deploying to GitHub Pages.
-
 ---
 
 ## 📸 Screenshots
