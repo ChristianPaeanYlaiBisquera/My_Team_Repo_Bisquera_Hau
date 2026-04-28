@@ -11,8 +11,8 @@
 
 ## 🎮 Live Demo
 
-🔗 **[Play the Game](https://christianpaeanylaibisquera.github.io/My_Team_Repo_Bisquera_Hau/)**  
-🌐 **[Visit the Website](https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/)**
+🔗 **[Play the Game](https://christianpaeanylaibisquera.github.io/My_Team_Repo_Bisquera_Hau/tower-defense-FULL.html)**  
+🌐 **[Visit the Website](https://christianpaeanylaibisquera.github.io/My_Team_Repo_Bisquera_Hau/)**
 
 ---
 
