@@ -84,10 +84,6 @@ The game runs entirely in the browser using the HTML5 Canvas API with no externa
 |--------|-----|
 | Select a tower | Click a tower card in the right panel |
 | Place a tower | Click any grey tile on the map |
-| Deselect tower type | Right-click anywhere on the map |
-| Select a placed tower | Click it on the map |
-| Upgrade tower | Click the **Upgrade** button in the info panel |
-| Sell tower | Click the **Sell** button in the info panel |
 | Start next wave | Click **▶ Send Wave** in the top bar |
 | Change game speed | Click **1×**, **2×**, or **3×** in the side panel |
 
